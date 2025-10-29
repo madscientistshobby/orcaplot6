@@ -1,0 +1,69 @@
+#!/bin/bash
+echo ""
+echo ""
+echo "  ------------------------------------"
+echo "  ! ORCA MOLECULAR ORBITAL GENERATOR !"
+echo "  ------------------------------------"
+echo ""
+echo "  ####################################"
+echo "  #        BAIK-GROUP @ KAIST        #"
+echo "  ####################################"
+echo ""
+export here=`pwd`
+
+function filename()
+{
+	echo -n " Please enter the orbital file name(e.g., JH2_WWN8_058_BP.uno) : "
+	read output
+}
+
+function orbital()
+{
+	echo -n " From which orbital do you want to generate : "
+	read initial
+	echo -n " To which orbital do you want to generate : "
+	read final
+
+}
+
+while :
+do
+	filename
+	if [ -f "$output" ]; then
+		break
+	else
+		echo ""
+		echo " Error : The file does not exist! Please enter the correct file name!"
+		echo ""
+	fi
+done
+echo ""
+echo ' The input file name is   '$output''
+echo ""
+
+while :
+do
+	orbital
+	if [ $initial -le $final ]; then
+		break
+	else
+		echo ""
+		echo " Error : Final orbital number must be equal or greater than initial orbital number!"
+		orbital
+	fi
+done
+
+echo ""
+echo " It takes a little time.."
+
+for (( orb=$initial; orb <= $final; orb++ ))
+do
+    sed "s/ORBITAL/$orb/g" /home/yparkgrp/YS/orcaplottmp6 > $here/tmp
+    sed "s/OUTPUT/$output/g" $here/tmp > run1.sh
+    bash run1.sh > log
+    rm tmp run1.sh log -rf
+done
+
+echo ""
+echo " Done"
+echo ""
