@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#ORCA version changed to 5_0_3 from 4_2_0 (fixed 240619 Sangho)
+#ORCA MO GENERETOR IS NOW UNDER THE CONSTRUCTION.
+#Updated by seokyeol 20251029 for ORCA6, 10, 11 under orbital --> 11, 12
+#PLEASE DON'T MODIFY.
+
+export ORCADIR="/home/baikgrp/calcs/JW3/appl/orca_600"
+export here=`pwd`
+sed 's/#.*$//g' > config << eof
+4
+100 100 100
+5
+7
+2
+ORBITAL
+11
+12
+eof
+
+$ORCADIR/orca_plot $here/OUTPUT -i < config
+rm -f config
+
